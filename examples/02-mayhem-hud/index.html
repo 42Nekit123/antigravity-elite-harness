@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAYHEM Analytics — High-Frequency Stream Intelligence</title>
+  <meta name="description" content="Ultra-low latency stream telemetry, automated vector anomaly heuristics, and real-time distributed cluster intelligence.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- =========================================================================
+       Background Watermark & Grid HUD
+       ========================================================================= -->
+  <div class="watermark-bg" aria-hidden="true">MAYHEM INTELLIGENCE</div>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <!-- =========================================================================
+       1. Navigation Header
+       ========================================================================= -->
+  <header class="header">
+    <div class="container nav-container">
+      <div class="brand-group">
+        <a href="#" class="brand-logo" aria-label="MAYHEM Analytics Home">
+          <!-- Cybernetic Reticle Emblem -->
+          <svg class="logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="18" cy="18" r="15" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <polygon points="18,4 32,28 4,28" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <circle cx="18" cy="18" r="4" fill="currentColor"/>
+            <line x1="18" y1="2" x2="18" y2="8" stroke="currentColor" stroke-width="2"/>
+            <line x1="18" y1="28" x2="18" y2="34" stroke="currentColor" stroke-width="2"/>
+            <line x1="2" y1="18" x2="8" y2="18" stroke="currentColor" stroke-width="2"/>
+            <line x1="28" y1="18" x2="34" y2="18" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <span class="brand-name">MAYHEM</span>
+          <span class="brand-tag">v3.4-rt</span>
+        </a>
+
+        <div class="status-badge" title="Telemetry cluster operational">
+          <span class="status-dot"></span>
+          <span class="status-text">Cluster live &middot; 0.38ms</span>
+        </div>
+      </div>
+
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-links">
+          <li><a href="#overview" class="nav-link active">Overview</a></li>
+          <li><a href="#telemetry" class="nav-link">Live telemetry</a></li>
+          <li><a href="#nodes" class="nav-link">Cluster matrix</a></li>
+          <li><a href="#architecture" class="nav-link">Architecture</a></li>
+          <li><a href="#estimator" class="nav-link">Estimator</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- Theme Toggle Switch Button -->
+        <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle light and dark theme" title="Toggle theme">
+          <!-- Sun Icon (for light mode) -->
+          <svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <!-- Moon Icon (for dark mode) -->
+          <svg class="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+
+        <a href="#telemetry" class="btn btn-secondary">Live console</a>
+        <a href="#estimator" class="btn btn-primary">Deploy cluster</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       2. Hero Section: Stream Intelligence & HUD Vector Radar
+       ========================================================================= -->
+  <main id="overview">
+    <section class="section hero-section">
+      <div class="container hero-grid">
+        
+        <!-- Hero Text & Value Proposition -->
+        <div class="hero-content">
+          <div class="hero-header">
+            <div class="eyebrow">High-frequency stream intelligence</div>
+            <h1 class="hero-title">
+              Real-time analytics for <span>extreme-throughput</span> event streams
+            </h1>
+          </div>
+
+          <p class="hero-description">
+            Zero-copy eBPF ingestion, automated vector anomaly heuristics, and real-time distributed telemetry across mission-critical edge topologies.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#telemetry" class="btn btn-primary">Explore live dashboard</a>
+            <button id="triggerSpikeBtn" class="btn btn-accent" title="Simulate an instant anomaly burst in the telemetry stream">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+              </svg>
+              <span>Inject anomaly spike</span>
+            </button>
+          </div>
+
+          <!-- Hero KPI Matrix -->
+          <div class="hero-kpis">
+            <div class="kpi-item">
+              <span class="kpi-val" id="heroThroughput">9.42M</span>
+              <span class="kpi-label">Events / second</span>
+            </div>
+            <div class="kpi-item">
+              <span class="kpi-val" id="heroLatency">0.38 ms</span>
+              <span class="kpi-label">p99 Ingest latency</span>
+            </div>
+            <div class="kpi-item">
+              <span class="kpi-val">99.999%</span>
+              <span class="kpi-label">Cluster availability</span>
+            </div>
+            <div class="kpi-item">
+              <span class="kpi-val" id="heroAccuracy">99.94%</span>
+              <span class="kpi-label">Anomaly accuracy</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Visual: Cyber HUD Orb Visualizer (inspired by MAYHEM artwork) -->
+        <div class="hero-visual">
+          <div class="hud-orb-card">
+            <div class="hud-card-header">
+              <div class="hud-status-indicator">
+                <span class="indicator-beacon"></span>
+                <span>HUD Telemetry Vector Matrix</span>
+              </div>
+              <div class="hud-stream-rate">
+                <span class="stream-rate-badge">STREAM ACTIVE</span>
+              </div>
+            </div>
+
+            <!-- SVG Circular HUD Display -->
+            <div class="hud-canvas-wrapper">
+              <svg class="hud-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <radialGradient id="hudGlow" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="var(--accent-primary)" stop-opacity="0.25"/>
+                    <stop offset="60%" stop-color="var(--accent-primary)" stop-opacity="0.05"/>
+                    <stop offset="100%" stop-color="transparent" stop-opacity="0"/>
+                  </radialGradient>
+                </defs>
+
+                <!-- Background Glow & Grid Rings -->
+                <circle cx="200" cy="200" r="180" fill="url(#hudGlow)"/>
+                <circle cx="200" cy="200" r="180" class="hud-ring ring-outer"/>
+                <circle cx="200" cy="200" r="150" class="hud-ring ring-dashed"/>
+                <circle cx="200" cy="200" r="110" class="hud-ring ring-mid"/>
+                <circle cx="200" cy="200" r="70" class="hud-ring ring-inner"/>
+                <circle cx="200" cy="200" r="30" class="hud-ring ring-core"/>
+
+                <!-- Crosshair & Axis Lines -->
+                <line x1="200" y1="10" x2="200" y2="390" class="hud-axis"/>
+                <line x1="10" y1="200" x2="390" y2="200" class="hud-axis"/>
+                <line x1="65" y1="65" x2="335" y2="335" class="hud-axis-diagonal"/>
+                <line x1="335" y1="65" x2="65" y2="335" class="hud-axis-diagonal"/>
+
+                <!-- Rotating Reticle Elements (Controlled by CSS keyframes) -->
+                <g class="hud-rotator-cw">
+                  <path d="M 200 20 A 180 180 0 0 1 380 200" fill="none" class="hud-arc arc-accent" stroke-width="2.5"/>
+                  <path d="M 200 380 A 180 180 0 0 1 20 200" fill="none" class="hud-arc arc-accent" stroke-width="2.5"/>
+                  <circle cx="200" cy="20" r="4" class="hud-node"/>
+                  <circle cx="200" cy="380" r="4" class="hud-node"/>
+                </g>
+
+                <g class="hud-rotator-ccw">
+                  <path d="M 90 90 A 155 155 0 0 1 310 90" fill="none" class="hud-arc arc-secondary" stroke-width="1.5" stroke-dasharray="8 6"/>
+                  <path d="M 310 310 A 155 155 0 0 1 90 310" fill="none" class="hud-arc arc-secondary" stroke-width="1.5" stroke-dasharray="8 6"/>
+                  <circle cx="310" cy="90" r="3" class="hud-node-secondary"/>
+                  <circle cx="90" cy="310" r="3" class="hud-node-secondary"/>
+                </g>
+
+                <!-- Frequency Spectrum Ring -->
+                <g class="hud-frequency-ring" id="hudSpectrumGroup">
+                  <!-- Generated dynamic spectrum tick elements -->
+                </g>
+
+                <!-- Center Core Status -->
+                <g class="hud-core-center">
+                  <polygon points="200,185 215,200 200,215 185,200" class="hud-diamond"/>
+                  <text x="200" y="240" class="hud-center-text" text-anchor="middle">MAYHEM</text>
+                  <text x="200" y="255" class="hud-center-subtext" text-anchor="middle" id="hudStatusReadout">SYNC: 100%</text>
+                </g>
+
+                <!-- Dynamic Telemetry Coordinates -->
+                <text x="35" y="45" class="hud-coord-text">RADAR.AZIMUTH // 44.82&deg;</text>
+                <text x="35" y="60" class="hud-coord-text">RING.PRESSURE // 98.4%</text>
+                <text x="365" y="45" class="hud-coord-text align-right">BUFFER: 16.4 GB</text>
+                <text x="365" y="60" class="hud-coord-text align-right" id="hudEntropyText">ENTROPY: 0.124</text>
+              </svg>
+            </div>
+
+            <!-- Simulation Controls Toolbar -->
+            <div class="hud-controls-toolbar">
+              <div class="sim-status">
+                <span class="sim-label">Engine simulation:</span>
+                <span class="sim-state" id="simStateLabel">Running</span>
+              </div>
+              <div class="sim-buttons">
+                <button id="toggleSimBtn" class="btn btn-sm btn-secondary" title="Pause / resume real-time stream simulation">Pause</button>
+                <div class="speed-toggle-group">
+                  <button class="speed-btn active" data-speed="1">1x</button>
+                  <button class="speed-btn" data-speed="2">2x</button>
+                  <button class="speed-btn" data-speed="5">5x</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         3. Live Telemetry & Metrics Dashboard Section
+         ========================================================================= -->
+    <section id="telemetry" class="section dashboard-section">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="eyebrow">Real-time control plane</div>
+            <h2 class="section-title">Telemetry stream & anomaly console</h2>
+          </div>
+          <div class="dashboard-controls">
+            <!-- Metric Category Switcher -->
+            <div class="tab-group" role="tablist" aria-label="Metric category selector">
+              <button class="tab-btn active" role="tab" aria-selected="true" data-metric="throughput">Throughput (ops/s)</button>
+              <button class="tab-btn" role="tab" aria-selected="false" data-metric="latency">Ingestion latency (ms)</button>
+              <button class="tab-btn" role="tab" aria-selected="false" data-metric="anomalies">Anomaly count</button>
+            </div>
+            <!-- Time Window Switcher -->
+            <div class="window-group">
+              <button class="window-btn active" data-window="1m">1m</button>
+              <button class="window-btn" data-window="5m">5m</button>
+              <button class="window-btn" data-window="1h">1h</button>
+              <button class="window-btn" data-window="24h">24h</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Main Grid -->
+        <div class="dashboard-grid">
+          
+          <!-- Live Telemetry SVG Line/Spline Chart Card -->
+          <div class="dash-card chart-card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <h3 class="card-title">Live ingestion stream</h3>
+                <span class="card-subtitle" id="chartSubtitle">Real-time operations per second across all edge channels</span>
+              </div>
+              <div class="chart-legend">
+                <div class="legend-item">
+                  <span class="legend-swatch swatch-primary"></span>
+                  <span class="legend-label">Nominal stream</span>
+                </div>
+                <div class="legend-item">
+                  <span class="legend-swatch swatch-accent"></span>
+                  <span class="legend-label">Anomaly threshold</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- SVG Real-time Chart Display -->
+            <div class="chart-container" id="chartContainer">
+              <svg class="stream-chart-svg" id="streamChartSvg" viewBox="0 0 800 280" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="var(--accent-primary)" stop-opacity="0.35"/>
+                    <stop offset="100%" stop-color="var(--accent-primary)" stop-opacity="0.0"/>
+                  </linearGradient>
+                </defs>
+
+                <!-- Grid lines -->
+                <line x1="40" y1="40" x2="780" y2="40" class="chart-grid-line"/>
+                <line x1="40" y1="100" x2="780" y2="100" class="chart-grid-line"/>
+                <line x1="40" y1="160" x2="780" y2="160" class="chart-grid-line"/>
+                <line x1="40" y1="220" x2="780" y2="220" class="chart-grid-line"/>
+
+                <!-- Threshold Alert Line -->
+                <line x1="40" y1="70" x2="780" y2="70" class="chart-threshold-line" stroke-dasharray="4 4"/>
+                <text x="780" y="65" class="chart-threshold-label" text-anchor="end">Warning threshold (10.5M ops/s)</text>
+
+                <!-- Y-Axis Labels -->
+                <text x="35" y="45" class="chart-axis-text" text-anchor="end" id="yAxisMax">12M</text>
+                <text x="35" y="105" class="chart-axis-text" text-anchor="end" id="yAxisMidHigh">9M</text>
+                <text x="35" y="165" class="chart-axis-text" text-anchor="end" id="yAxisMidLow">6M</text>
+                <text x="35" y="225" class="chart-axis-text" text-anchor="end" id="yAxisMin">3M</text>
+
+                <!-- Chart Area Fill & Stroke Path -->
+                <path id="chartAreaPath" d="" fill="url(#chartGradient)"/>
+                <path id="chartLinePath" d="" fill="none" class="chart-line-stroke" stroke-width="2.5"/>
+
+                <!-- Data point nodes -->
+                <g id="chartNodesGroup"></g>
+
+                <!-- Interactive Cursor Crosshair -->
+                <g id="chartCursor" class="chart-cursor" style="display: none;">
+                  <line id="cursorLine" x1="0" y1="20" x2="0" y2="240" class="cursor-line" stroke-dasharray="3 3"/>
+                  <circle id="cursorPoint" cx="0" cy="0" r="5" class="cursor-point"/>
+                </g>
+              </svg>
+
+              <!-- Chart Tooltip Popup -->
+              <div id="chartTooltip" class="chart-tooltip" style="display: none;">
+                <div class="tooltip-time" id="tooltipTime">--:--:--</div>
+                <div class="tooltip-val" id="tooltipVal">0.00 M ops/s</div>
+                <div class="tooltip-status" id="tooltipStatus">Nominal</div>
+              </div>
+            </div>
+
+            <!-- Chart Footer Stats Bar -->
+            <div class="chart-footer-stats">
+              <div class="stat-pill">
+                <span class="stat-pill-label">Peak throughput:</span>
+                <span class="stat-pill-val" id="chartPeakVal">10.82M ops/s</span>
+              </div>
+              <div class="stat-pill">
+                <span class="stat-pill-label">Mean latency:</span>
+                <span class="stat-pill-val" id="chartMeanLatency">0.34 ms</span>
+              </div>
+              <div class="stat-pill">
+                <span class="stat-pill-label">Buffered frames:</span>
+                <span class="stat-pill-val" id="chartBufferedFrames">24,819</span>
+              </div>
+              <div class="stat-pill">
+                <span class="stat-pill-label">Buffer backpressure:</span>
+                <span class="stat-pill-val status-green" id="chartBackpressure">0.02%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Multi-Dimensional Threat & Entropy Radar HUD -->
+          <div class="dash-card radar-card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Threat & anomaly radar</h3>
+                <span class="card-subtitle">5-Vector entropy analysis</span>
+              </div>
+              <span class="radar-score-badge" id="radarScoreBadge">Score: 0.12 (Low)</span>
+            </div>
+
+            <!-- SVG Polygon Radar -->
+            <div class="radar-container">
+              <svg class="radar-svg" viewBox="0 0 280 260">
+                <!-- Concentric Web Rings -->
+                <polygon points="140,20 254,103 211,237 69,237 26,103" class="radar-grid-ring"/>
+                <polygon points="140,55 225,117 193,218 87,218 55,117" class="radar-grid-ring"/>
+                <polygon points="140,90 197,131 175,198 105,198 83,131" class="radar-grid-ring"/>
+
+                <!-- Axis Lines -->
+                <line x1="140" y1="130" x2="140" y2="20" class="radar-axis"/>
+                <line x1="140" y1="130" x2="254" y2="103" class="radar-axis"/>
+                <line x1="140" y1="130" x2="211" y2="237" class="radar-axis"/>
+                <line x1="140" y1="130" x2="69" y2="237" class="radar-axis"/>
+                <line x1="140" y1="130" x2="26" y2="103" class="radar-axis"/>
+
+                <!-- Live Vector Data Polygon -->
+                <polygon id="radarPoly" points="140,90 180,120 160,180 110,170 90,120" class="radar-data-poly"/>
+                
+                <!-- Axis Text Labels -->
+                <text x="140" y="14" class="radar-label" text-anchor="middle">Entropy</text>
+                <text x="260" y="105" class="radar-label" text-anchor="start">DDoS load</text>
+                <text x="220" y="254" class="radar-label" text-anchor="middle">Memory jitter</text>
+                <text x="60" y="254" class="radar-label" text-anchor="middle">Socket leak</text>
+                <text x="20" y="105" class="radar-label" text-anchor="end">Payload malform</text>
+              </svg>
+            </div>
+
+            <div class="radar-breakdown">
+              <div class="radar-metric-row">
+                <span class="metric-name">Entropy coefficient</span>
+                <span class="metric-bar-wrap"><span class="metric-bar" id="barEntropy" style="width: 24%;"></span></span>
+                <span class="metric-num" id="valEntropy">0.24</span>
+              </div>
+              <div class="radar-metric-row">
+                <span class="metric-name">DDoS attack index</span>
+                <span class="metric-bar-wrap"><span class="metric-bar" id="barDdos" style="width: 12%;"></span></span>
+                <span class="metric-num" id="valDdos">0.12</span>
+              </div>
+              <div class="radar-metric-row">
+                <span class="metric-name">Socket concurrency</span>
+                <span class="metric-bar-wrap"><span class="metric-bar" id="barSocket" style="width: 38%;"></span></span>
+                <span class="metric-num" id="valSocket">0.38</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Secondary Dashboard Row: Cluster Nodes & Live Event Terminal -->
+        <div class="dashboard-subgrid" id="nodes">
+          
+          <!-- Node Topology Health Matrix -->
+          <div class="dash-card nodes-card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Distributed edge nodes</h3>
+                <span class="card-subtitle">Global topology cluster health</span>
+              </div>
+              <div class="cluster-summary">
+                <span class="summary-pill"><strong id="healthyNodesCount">4</strong> / 4 healthy</span>
+              </div>
+            </div>
+
+            <div class="node-list">
+              <!-- Node 1: Tokyo-East -->
+              <div class="node-item" id="node-tyo">
+                <div class="node-info">
+                  <div class="node-primary">
+                    <span class="node-status-dot status-ok"></span>
+                    <span class="node-name">ap-northeast-1 (Tokyo)</span>
+                  </div>
+                  <span class="node-ip">198.51.100.24</span>
+                </div>
+                <div class="node-metrics">
+                  <div class="node-metric-cell">
+                    <span class="metric-lbl">Latency</span>
+                    <span class="metric-val" id="tyoLatency">0.28 ms</span>
+                  </div>
+                  <div class="node-metric-cell">
+                    <span class="metric-lbl">CPU</span>
+                    <span class="metric-val" id="tyoCpu">34%</span>
+                  </div>
+                  <div class="node-metric-cell">
+                    <span class="metric-lbl">Throughput</span>
+                    <span class="metric-val" id="tyoThroughput">2.84M/s</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Node 2: Frankfurt-01 -->
+              <div class="node-item" id="node-fra">
+                <div class="node-info">
+                  <div class="node-primary">
+                    <span class="node-status-dot status-ok"></span>
+                    <span class="node-name">eu-central-1 (Frankfurt)</span>
+                  </div>
+                  <span class="node-ip">198.51.100.89</span>
+                </div>
+                <div class="node-metrics">
+                  <div class="node-metric-cell">
+                    <span class="metric-lbl">Latency</span>
+                    <span class="metric-val" id="fraLatency">0.42 ms</span>
+                  </div>
+                  <div class="node-metric-cell">
+                    <span class="metric-lbl">CPU</span>
+                    <span class="metric-val" id="fraCpu">42%</span>
+                  </div>
+                  <div class="node-metric-cell">
+                    <span class="metric-lbl">Throughput</span>
+                    <span class="metric-val" id="fraThroughput">3.12M/s</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Node 3: Virginia-02 -->
+              <div class="node-item" id="node-iad">
+                <div class="node-info">
+                  <div class="node-primary">
+                    <span class="node-status-dot status-ok"></span>
+                    <span class="node-name">us-east-1 (Virginia)</span>
+                  </div>
+                  <span class="node-ip">198.51.100.104</span>
+                </div>
+                <div class="node-metrics">
+                  <div class="node-metric-cell">
+                    <span class="metric-lbl">Latency</span>
+                    <span class="metric-val" id="iadLatency">0.31 ms</span>
+                  </div>
+                  <div class="node-metric-cell">
+                    <span class="metric-lbl">CPU</span>
+                    <span class="metric-val" id="iadCpu">39%</span>
+                  </div>
+                  <div class="node-metric-cell">
+                    <span class="metric-lbl">Throughput</span>
+                    <span class="metric-val" id="iadThroughput">2.41M/s</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Node 4: Singapore-04 -->
+              <div class="node-item" id="node-sin">
+                <div class="node-info">
+                  <div class="node-primary">
+                    <span class="node-status-dot status-ok"></span>
+                    <span class="node-name">ap-southeast-1 (Singapore)</span>
+                  </div>
+                  <span class="node-ip">198.51.100.178</span>
+                </div>
+                <div class="node-metrics">
+                  <div class="node-metric-cell">
+                    <span class="metric-lbl">Latency</span>
+                    <span class="metric-val" id="sinLatency">0.49 ms</span>
+                  </div>
+                  <div class="node-metric-cell">
+                    <span class="metric-lbl">CPU</span>
+                    <span class="metric-val" id="sinCpu">29%</span>
+                  </div>
+                  <div class="node-metric-cell">
+                    <span class="metric-lbl">Throughput</span>
+                    <span class="metric-val" id="sinThroughput">1.05M/s</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Event Log & Anomaly Stream Terminal -->
+          <div class="dash-card terminal-card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Live event & anomaly stream</h3>
+                <span class="card-subtitle">Real-time structured event inspection</span>
+              </div>
+              <div class="terminal-actions">
+                <div class="terminal-filter-group">
+                  <button class="filter-btn active" data-filter="all">All</button>
+                  <button class="filter-btn" data-filter="critical">Critical</button>
+                  <button class="filter-btn" data-filter="anomaly">Anomalies</button>
+                </div>
+                <button id="clearLogBtn" class="btn btn-sm btn-ghost" title="Clear log terminal">Clear</button>
+              </div>
+            </div>
+
+            <!-- Terminal Feed Output -->
+            <div class="terminal-body" id="terminalFeed" tabindex="0" aria-label="Streaming event logs">
+              <!-- Logs appended dynamically via JavaScript -->
+            </div>
+
+            <div class="terminal-footer">
+              <span class="terminal-status-text">
+                <span class="pulse-dot"></span>
+                <span>Subscribed to Kafka / eBPF kernel ring buffer &middot; <strong id="logCounter">0</strong> events ingested</span>
+              </span>
+              <label class="autoscroll-toggle">
+                <input type="checkbox" id="autoscrollCheckbox" checked>
+                <span>Auto-scroll</span>
+              </label>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         4. Architecture & Technical Foundations
+         ========================================================================= -->
+    <section id="architecture" class="section architecture-section">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="eyebrow">Engine architecture</div>
+          <h2 class="section-title">Built for wire-speed determinism</h2>
+          <p class="section-subtitle">
+            Engineered from bare metal with lockless ring buffers, vectorized anomaly kernels, and sub-millisecond distributed consensus.
+          </p>
+        </div>
+
+        <!-- 4-Card Feature Matrix -->
+        <div class="feature-grid">
+          <!-- Feature 1 -->
+          <div class="feature-card">
+            <div class="feature-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+              </svg>
+            </div>
+            <h3 class="feature-title">Zero-copy eBPF ingestion</h3>
+            <p class="feature-desc">
+              Bypasses standard Linux network stack overhead to capture, filter, and vectorize raw network frames directly inside kernel space.
+            </p>
+            <div class="feature-tag">Under 50 nanoseconds per frame</div>
+          </div>
+
+          <!-- Feature 2 -->
+          <div class="feature-card">
+            <div class="feature-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 6v6l4 2"/>
+              </svg>
+            </div>
+            <h3 class="feature-title">Vector anomaly heuristics</h3>
+            <p class="feature-desc">
+              SIMD-accelerated isolation forests and entropy classifiers detect DDoS surges, payload corruptions, and socket leakage in real time.
+            </p>
+            <div class="feature-tag">0.06% False positive rate</div>
+          </div>
+
+          <!-- Feature 3 -->
+          <div class="feature-card">
+            <div class="feature-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                <line x1="12" y1="22.08" x2="12" y2="12"/>
+              </svg>
+            </div>
+            <h3 class="feature-title">Distributed graph lineage</h3>
+            <p class="feature-desc">
+              Constructs live causational dependency graphs across microservices and asynchronous workers without manual instrumentation overhead.
+            </p>
+            <div class="feature-tag">Automatic span correlation</div>
+          </div>
+
+          <!-- Feature 4 -->
+          <div class="feature-card">
+            <div class="feature-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </div>
+            <h3 class="feature-title">Autonomous self-healing</h3>
+            <p class="feature-desc">
+              Dynamically sheds non-critical telemetry channels during high-load surges and triggers instant failovers across surviving edge partitions.
+            </p>
+            <div class="feature-tag">Raft-backed quorum replication</div>
+          </div>
+        </div>
+
+        <!-- Pipeline Diagram Box -->
+        <div class="pipeline-diagram-box">
+          <div class="diagram-header">
+            <span class="diagram-title">MAYHEM Real-time ingestion & analytics pipeline</span>
+            <span class="diagram-badge">End-to-end latency &lt; 1ms</span>
+          </div>
+
+          <div class="pipeline-flow">
+            <!-- Stage 1 -->
+            <div class="flow-stage">
+              <div class="stage-step">Stage 01</div>
+              <div class="stage-name">Edge sources</div>
+              <div class="stage-sub">HTTP, gRPC, Kafka, eBPF</div>
+            </div>
+            <div class="flow-arrow">&rarr;</div>
+
+            <!-- Stage 2 -->
+            <div class="flow-stage stage-highlight">
+              <div class="stage-step">Stage 02</div>
+              <div class="stage-name">Lockless ring buffer</div>
+              <div class="stage-sub">Zero-copy shared memory</div>
+            </div>
+            <div class="flow-arrow">&rarr;</div>
+
+            <!-- Stage 3 -->
+            <div class="flow-stage stage-highlight">
+              <div class="stage-step">Stage 03</div>
+              <div class="stage-name">Vector heuristic engine</div>
+              <div class="stage-sub">SIMD anomaly classification</div>
+            </div>
+            <div class="flow-arrow">&rarr;</div>
+
+            <!-- Stage 4 -->
+            <div class="flow-stage">
+              <div class="stage-step">Stage 04</div>
+              <div class="stage-name">Telemetry console & OLAP</div>
+              <div class="stage-sub">Instant HUD & SQL queries</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         5. Capacity & Cost Estimator
+         ========================================================================= -->
+    <section id="estimator" class="section estimator-section">
+      <div class="container">
+        <div class="estimator-wrapper">
+          <div class="estimator-header">
+            <div class="eyebrow">Capacity calculator</div>
+            <h2 class="section-title">Configure your telemetry cluster</h2>
+            <p class="section-subtitle">
+              Scale dynamically from single node testbeds to planetary multi-million event topologies.
+            </p>
+          </div>
+
+          <div class="estimator-grid">
+            <!-- Inputs Column -->
+            <div class="estimator-inputs">
+              
+              <!-- Slider 1: Events/sec -->
+              <div class="slider-group">
+                <div class="slider-label-row">
+                  <label for="eventSlider" class="slider-label">Sustained ingestion throughput</label>
+                  <span class="slider-readout" id="readoutEvents">5.0 M ops/s</span>
+                </div>
+                <input type="range" id="eventSlider" min="0.1" max="25.0" step="0.1" value="5.0" class="custom-range" aria-label="Ingestion throughput in millions of ops per second">
+                <div class="slider-range-limits">
+                  <span>100k ops/s</span>
+                  <span>10M ops/s</span>
+                  <span>25M ops/s</span>
+                </div>
+              </div>
+
+              <!-- Slider 2: Retention Days -->
+              <div class="slider-group">
+                <div class="slider-label-row">
+                  <label for="retentionSlider" class="slider-label">High-resolution retention window</label>
+                  <span class="slider-readout" id="readoutRetention">30 days</span>
+                </div>
+                <input type="range" id="retentionSlider" min="3" max="90" step="1" value="30" class="custom-range" aria-label="Retention window in days">
+                <div class="slider-range-limits">
+                  <span>3 days</span>
+                  <span>30 days</span>
+                  <span>90 days</span>
+                </div>
+              </div>
+
+              <!-- Checkbox Options -->
+              <div class="checkbox-options">
+                <label class="custom-checkbox">
+                  <input type="checkbox" id="optEbpf" checked>
+                  <span class="checkbox-box"></span>
+                  <span class="checkbox-text">Kernel eBPF zero-copy bypass module</span>
+                </label>
+                <label class="custom-checkbox">
+                  <input type="checkbox" id="optAi" checked>
+                  <span class="checkbox-box"></span>
+                  <span class="checkbox-text">Vector SIMD anomaly classification</span>
+                </label>
+                <label class="custom-checkbox">
+                  <input type="checkbox" id="optHa">
+                  <span class="checkbox-box"></span>
+                  <span class="checkbox-text">Multi-region 3x Raft replication (HA)</span>
+                </label>
+              </div>
+
+            </div>
+
+            <!-- Output Column: Estimation Card -->
+            <div class="estimator-outputs">
+              <div class="output-card">
+                <div class="output-card-header">
+                  <span class="output-tier-title">Recommended Topology</span>
+                  <span class="output-tier-badge" id="clusterTierBadge">Enterprise Cluster</span>
+                </div>
+
+                <div class="output-specs">
+                  <div class="spec-row">
+                    <span class="spec-name">Monthly ingested data:</span>
+                    <span class="spec-val" id="specVolume">64.8 TB / mo</span>
+                  </div>
+                  <div class="spec-row">
+                    <span class="spec-name">Compressed storage pool:</span>
+                    <span class="spec-val" id="specStorage">19.4 TB</span>
+                  </div>
+                  <div class="spec-row">
+                    <span class="spec-name">Dedicated core nodes:</span>
+                    <span class="spec-val" id="specNodes">4 Nodes (64 vCPU)</span>
+                  </div>
+                  <div class="spec-row">
+                    <span class="spec-name">Ingestion p99 guarantee:</span>
+                    <span class="spec-val">&lt; 0.50 ms</span>
+                  </div>
+                </div>
+
+                <div class="output-price-box">
+                  <div class="price-label">Estimated monthly infrastructure cost:</div>
+                  <div class="price-val-row">
+                    <span class="price-currency">$</span>
+                    <span class="price-amount" id="specPrice">1,480</span>
+                    <span class="price-period">/ month</span>
+                  </div>
+                </div>
+
+                <div class="output-actions">
+                  <button class="btn btn-primary btn-block" id="deployClusterBtn">Deploy configured cluster</button>
+                  <button class="btn btn-secondary btn-block" id="downloadSpecBtn">Export Terraform configuration</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================================================
+       6. High-Tech Footer
+       ========================================================================= -->
+  <footer class="footer">
+    <div class="container footer-container">
+      
+      <div class="footer-brand">
+        <div class="brand-group">
+          <a href="#" class="brand-logo" aria-label="MAYHEM Analytics">
+            <svg class="logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="18" cy="18" r="15" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <polygon points="18,4 32,28 4,28" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              <circle cx="18" cy="18" r="4" fill="currentColor"/>
+            </svg>
+            <span class="brand-name">MAYHEM</span>
+          </a>
+        </div>
+        <p class="footer-tagline">
+          Deterministic stream analytics, kernel-level telemetry ingestion, and vector anomaly classification.
+        </p>
+        <div class="cli-command-box">
+          <span class="cli-label">CLI quick install:</span>
+          <code class="cli-code">curl -fsSL https://mayhem.sh/cli | sh</code>
+        </div>
+      </div>
+
+      <div class="footer-nav-columns">
+        <div class="footer-col">
+          <div class="col-title">Telemetry Engine</div>
+          <ul class="footer-links">
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#telemetry">Live dashboard</a></li>
+            <li><a href="#nodes">Cluster topology</a></li>
+            <li><a href="#architecture">Architecture</a></li>
+            <li><a href="#estimator">Capacity estimator</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <div class="col-title">Documentation</div>
+          <ul class="footer-links">
+            <li><a href="#">eBPF Driver setup</a></li>
+            <li><a href="#">Kafka ring connector</a></li>
+            <li><a href="#">Vector scoring API</a></li>
+            <li><a href="#">Grafana integration</a></li>
+            <li><a href="#">Prometheus exporter</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <div class="col-title">System Health</div>
+          <div class="health-block">
+            <div class="health-row">
+              <span class="status-dot"></span>
+              <span>All 4 edge regions active</span>
+            </div>
+            <div class="health-row">
+              <span class="health-lbl">Core latency:</span>
+              <span class="health-val">0.38 ms</span>
+            </div>
+            <div class="health-row">
+              <span class="health-lbl">Ingest loss:</span>
+              <span class="health-val">0.0000%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="container footer-bottom">
+      <div class="copyright-text">
+        &copy; 2026 MAYHEM Analytics Technologies. All rights reserved. Sentence case UI compliant.
+      </div>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy policy</a>
+        <a href="#">Terms of service</a>
+        <a href="#">Security compliance (SOC2)</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =========================================================================
+       JavaScript Engine
+       ========================================================================= -->
+  <script src="app.js"></script>
+</body>
+</html>

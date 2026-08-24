@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aether Analytics — Real-Time Market Intelligence</title>
+
+  <!-- Google Fonts: Inter as requested for crisp Figma/Apple-tier typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Interactive Background Canvas (Physics & Mouse Reactive) -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- Main Application Container -->
+  <div class="app-container">
+    
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <a href="#" class="brand">
+          <div class="brand-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+              <polyline points="16 7 22 7 22 13"></polyline>
+            </svg>
+          </div>
+          <span class="brand-title">Aether</span>
+          <span class="brand-badge">Market Intelligence</span>
+        </a>
+
+        <nav class="nav-links">
+          <a href="#overview" class="nav-link active">Overview</a>
+          <a href="#screener" class="nav-link">Screener</a>
+          <a href="#signals" class="nav-link">Signals</a>
+          <a href="#orderbook" class="nav-link">Order flow</a>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <div class="market-status-indicator">
+          <span class="status-dot"></span>
+          <span>Feed active &bull; 60 fps</span>
+        </div>
+
+        <button class="btn-icon" id="theme-toggle-btn" title="Toggle theme (Light/Dark)" aria-label="Toggle theme">
+          <svg id="theme-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg id="theme-icon-moon" style="display:none;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Live Ticker Tape -->
+    <section class="ticker-tape-container" aria-label="Real-time market ticker">
+      <div class="ticker-tape-track" id="ticker-tape-track">
+        <!-- Injected via app.js -->
+      </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <main class="main-content" id="overview">
+
+      <!-- Top KPI Bar -->
+      <section class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span>Total market cap</span>
+            <span class="kpi-badge up">+2.45%</span>
+          </div>
+          <div class="kpi-value-row">
+            <span class="kpi-value">$2.748T</span>
+          </div>
+          <span class="kpi-subtext">24h volume: $104.2B</span>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span>Market sentiment</span>
+            <span class="kpi-badge up">Greed (68)</span>
+          </div>
+          <div class="kpi-value-row">
+            <span class="kpi-value">68 / 100</span>
+          </div>
+          <span class="kpi-subtext">Up 4 pts from yesterday</span>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span>BTC dominance</span>
+            <span class="kpi-badge down">-0.32%</span>
+          </div>
+          <div class="kpi-value-row">
+            <span class="kpi-value">54.18%</span>
+          </div>
+          <span class="kpi-subtext">ETH dominance: 16.42%</span>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span>Volatility index (VIX-M)</span>
+            <span class="kpi-badge down">Low (18.4)</span>
+          </div>
+          <div class="kpi-value-row">
+            <span class="kpi-value">18.42</span>
+          </div>
+          <span class="kpi-subtext">Optimal liquidity state</span>
+        </div>
+      </section>
+
+      <!-- Primary Grid: Chart Panel + Order Book -->
+      <section class="dashboard-primary-grid">
+        
+        <!-- Interactive Financial Chart Panel -->
+        <div class="chart-panel-card">
+          <div class="chart-header-bar">
+            
+            <div class="asset-identity">
+              <div class="asset-icon-wrap" id="active-asset-icon">₿</div>
+              <div class="asset-info">
+                <div class="asset-name-row">
+                  <span class="asset-name" id="active-asset-name">Bitcoin / US Dollar</span>
+                  <span class="asset-category" id="active-asset-symbol">BTC/USD</span>
+                </div>
+                <div class="asset-price-row">
+                  <span class="asset-price-main" id="active-asset-price">$64,320.50</span>
+                  <span class="asset-change-pill up" id="active-asset-change">+3.42%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Controls: Timeframe, Chart Type & Indicators -->
+            <div class="chart-controls-group">
+              
+              <!-- Timeframes -->
+              <div class="segmented-control" id="timeframe-control">
+                <button class="seg-btn" data-tf="1H">1h</button>
+                <button class="seg-btn active" data-tf="24H">24h</button>
+                <button class="seg-btn" data-tf="7D">7d</button>
+                <button class="seg-btn" data-tf="1M">1m</button>
+                <button class="seg-btn" data-tf="1Y">1y</button>
+              </div>
+
+              <!-- Chart Types -->
+              <div class="segmented-control" id="chart-type-control">
+                <button class="seg-btn active" data-type="area" title="Area line chart">Area</button>
+                <button class="seg-btn" data-type="candlestick" title="Candlestick chart">Candles</button>
+              </div>
+
+              <!-- Indicators -->
+              <div class="indicator-toggles">
+                <button class="toggle-chip active" data-indicator="ema20">EMA 20</button>
+                <button class="toggle-chip" data-indicator="ema50">EMA 50</button>
+                <button class="toggle-chip" data-indicator="bollinger">Bollinger</button>
+                <button class="toggle-chip active" data-indicator="volume">Vol</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Canvas Container -->
+          <div class="chart-canvas-wrapper" id="chart-container">
+            <canvas id="market-chart-canvas"></canvas>
+          </div>
+
+          <!-- Bottom Meta Bar -->
+          <div class="chart-meta-bar">
+            <div class="meta-stat">
+              <span class="meta-label">24h high</span>
+              <span class="meta-val" id="meta-high">$65,110.00</span>
+            </div>
+            <div class="meta-stat">
+              <span class="meta-label">24h low</span>
+              <span class="meta-val" id="meta-low">$62,840.20</span>
+            </div>
+            <div class="meta-stat">
+              <span class="meta-label">24h volume</span>
+              <span class="meta-val" id="meta-volume">$28.45B</span>
+            </div>
+            <div class="meta-stat">
+              <span class="meta-label">RSI (14)</span>
+              <span class="meta-val" id="meta-rsi">58.4 (Neutral)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order Book & Flow Side Panel -->
+        <div class="side-panel-card" id="orderbook">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">Order flow book</h2>
+              <span class="panel-subtitle">Real-time level 2 depth</span>
+            </div>
+            <span class="brand-badge">Live</span>
+          </div>
+
+          <div class="orderbook-table">
+            <div class="orderbook-header-row">
+              <span>Price (USD)</span>
+              <span class="ob-cell-right">Size</span>
+              <span class="ob-cell-right">Total</span>
+            </div>
+
+            <!-- Asks (Red / Down) -->
+            <div id="orderbook-asks" style="display: flex; flex-direction: column-reverse; gap: 2px;">
+              <!-- Injected by app.js -->
+            </div>
+
+            <!-- Spread Indicator -->
+            <div class="orderbook-spread-row">
+              <span style="color: var(--color-text-muted);">Spread: 0.50</span>
+              <span id="orderbook-mid-price" style="font-family: var(--font-mono); font-weight: 500;">$64,320.50</span>
+            </div>
+
+            <!-- Bids (Green / Up) -->
+            <div id="orderbook-bids" style="display: flex; flex-direction: column; gap: 2px;">
+              <!-- Injected by app.js -->
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Market Screener & Watchlist Table -->
+      <section class="screener-card" id="screener">
+        <div class="screener-filter-bar">
+          <div>
+            <h2 class="panel-title">Market intelligence screener</h2>
+            <span class="panel-subtitle">Multi-asset tracking and performance matrix</span>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+            <!-- Category Tabs -->
+            <div class="segmented-control" id="category-filter">
+              <button class="seg-btn active" data-cat="all">All assets</button>
+              <button class="seg-btn" data-cat="crypto">Crypto</button>
+              <button class="seg-btn" data-cat="equities">Equities</button>
+              <button class="seg-btn" data-cat="forex">Forex & metals</button>
+            </div>
+
+            <!-- Search Input -->
+            <div class="search-input-wrap">
+              <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="text" id="screener-search" class="search-input" placeholder="Search asset or ticker..." autocomplete="off">
+            </div>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="market-table">
+            <thead>
+              <tr>
+                <th>Asset</th>
+                <th style="text-align: right;">Price</th>
+                <th style="text-align: right;">1h change</th>
+                <th style="text-align: right;">24h change</th>
+                <th style="text-align: center;">7d trend</th>
+                <th style="text-align: right;">24h volume</th>
+                <th style="text-align: right;">Market cap</th>
+                <th style="text-align: center;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="screener-tbody">
+              <!-- Injected by app.js -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Secondary Analytics Grid: Market Sentiment + AI Signal Feed -->
+      <section class="dashboard-secondary-grid" id="signals">
+        
+        <!-- Sentiment & Technical Structure -->
+        <div class="screener-card">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">Market sentiment index</h2>
+              <span class="panel-subtitle">Multi-factor fear, greed, & momentum scoring</span>
+            </div>
+          </div>
+
+          <div class="sentiment-meter-wrap">
+            <div class="sentiment-score-row">
+              <span>Extreme fear</span>
+              <span style="font-weight: 500; color: var(--color-text);">Current: Greed (68)</span>
+              <span>Extreme greed</span>
+            </div>
+            <div class="sentiment-bar-track">
+              <div class="sentiment-pointer" style="left: 68%;"></div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 0.5rem;">
+            <div style="padding: 0.75rem; border-radius: var(--radius-sm); background: var(--color-surface-subtle); border: 1px solid var(--color-border);">
+              <span class="meta-label">On-chain accumulation</span>
+              <div style="font-size: 1.05rem; font-weight: 500; margin-top: 0.2rem; color: var(--color-up);">Strong inflow</div>
+            </div>
+            <div style="padding: 0.75rem; border-radius: var(--radius-sm); background: var(--color-surface-subtle); border: 1px solid var(--color-border);">
+              <span class="meta-label">Funding rates</span>
+              <div style="font-size: 1.05rem; font-weight: 500; margin-top: 0.2rem; color: var(--color-text);">+0.012% (Balanced)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Algorithmic Signals Feed -->
+        <div class="screener-card">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">Algorithmic signals stream</h2>
+              <span class="panel-subtitle">Automated trend detection & breakouts</span>
+            </div>
+            <span class="brand-badge">Real-time</span>
+          </div>
+
+          <div class="signals-list" id="signals-stream">
+            <!-- Injected by app.js -->
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>Aether Market Intelligence &bull; Interactive reactive physics background &bull; All market figures simulated for live demonstration</p>
+    </footer>
+
+    <!-- Interactive Background Controls Floating Dock -->
+    <aside class="fx-dock" aria-label="Interactive background settings">
+      <div class="fx-label">
+        <span class="fx-pulse-dot"></span>
+        <span>Mouse physics:</span>
+      </div>
+      <div class="fx-btn-group" id="fx-mode-selector">
+        <button class="fx-mode-btn active" data-mode="quantum">Quantum flux</button>
+        <button class="fx-mode-btn" data-mode="beams">Neural beams</button>
+        <button class="fx-mode-btn" data-mode="warp">Warp grid</button>
+        <button class="fx-mode-btn" data-mode="orbit">Gravity orbit</button>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Application Scripts -->
+  <script src="background-fx.js"></script>
+  <script src="chart-engine.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
