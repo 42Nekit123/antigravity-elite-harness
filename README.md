@@ -6,6 +6,7 @@
 </p>
 
 <p align="center">
+  <a href="https://42nekit123.github.io/antigravity-elite-harness/"><b>🚀 Live Demo (Interactive Dashboard)</b></a> •
   <a href="README.md"><b>English</b></a> •
   <a href="README.ru.md">Русский</a>
 </p>
