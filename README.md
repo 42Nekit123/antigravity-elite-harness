@@ -1,8 +1,13 @@
 <p align="center">
   <h1 align="center">⚡ Antigravity Elite Harness</h1>
   <p align="center">
-    <strong>Claude-grade engineering rigor, 7-vector diff reviews & zero-AI-slop design system for Google Antigravity.</strong>
+    <strong>Claude-grade engineering rigor, 7-vector diff reviews & zero-AI-slop design standards for Google Antigravity.</strong>
   </p>
+</p>
+
+<p align="center">
+  <a href="README.md"><b>English</b></a> •
+  <a href="README.ru.md">Русский</a>
 </p>
 
 <p align="center">
@@ -117,7 +122,8 @@ antigravity-elite-harness/
 │   └── 04-market-flux/
 ├── install.ps1                # 1-click Windows installer
 ├── install.sh                 # 1-click Unix installer
-└── README.md
+├── README.md                  # English documentation
+└── README.ru.md               # Russian documentation
 ```
 
 ---
